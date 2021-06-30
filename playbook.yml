@@ -3,7 +3,7 @@
 - name: Provision a {{ application_name }} web server
   hosts: peddlesoft
   become: true
-#  gather_facts: no
+  gather_facts: no
   become_method: sudo
   become_user: root
 
@@ -48,9 +48,9 @@
 #    - geerlingguy.certbot
 #    - { role: geerlingguy.nodejs, nodejs_version: "14.x", nodejs_install_npm_user: "root"}
 #    - { role: ocha.yarn}
-    - uwsgi
+#    - uwsgi
 #    - db
-#    - web
+    - web
 #    - celery
 #    - memcached
 #    - extras

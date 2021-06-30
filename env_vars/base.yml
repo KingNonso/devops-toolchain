@@ -28,7 +28,7 @@ env_debug: False
 
 # Django settings
 requirements_file: "{{ project_path }}/requirements.txt"
-settings_file: local
+settings_file: production
 django_settings_file: "{{ application_name }}.settings.{{ settings_file }}"
 django_environment: "{{ project_path }}"
 
