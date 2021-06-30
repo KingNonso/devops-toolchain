@@ -1,0 +1,16 @@
+# encrypted password token has {{ access_token }} defined
+git_pass.yml
+
+# PyCharm IDE
+.idea
+
+# Vagrant
+.vagrant
+*.log
+vagrant_ansible_inventory_default
+
+# Ansible
+*.retry
+
+# Python
+*.pyc
