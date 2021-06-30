@@ -1,0 +1,95 @@
+---
+- name: Install Python3 Pip
+  apt:
+    update_cache: "{{ update_apt_cache }}"
+    state: present
+    name:
+      - python-setuptools
+      - python3-psycopg2
+      - python3-dev
+      - python3-pip
+      - build-essential
+
+- name: Install Uwsgi
+  pip:
+    name: uwsgi
+    state: present
+    executable: pip3
+  tags: packages
+
+
+- name: Create /etc/uwsgi/sites directory if it does not exist
+  file:
+    path: /etc/uwsgi/sites
+    state: directory
+
+- name: Create /etc/systemd/system/uwsgi.service directory if it does not exist
+  file:
+    path: /etc/systemd/system
+    state: directory
+
+- name: Create uwsgi.service file for server
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/uwsgi.service
+    owner: root
+    group: root
+
+- name: Create .ini file for app
+  template:
+    src: ini.j2
+    dest: /etc/uwsgi/sites/{{ application_name }}.ini
+    mode: "0644"
+    owner: root
+    group: root
+  tags:
+    - app_config
+
+- name: Create sites-available directory if it does not exist
+  file:
+    path: /etc/nginx/sites-available/
+    state: directory
+  tags:
+    - app_config
+
+- name: Create domain.conf file for the app if it does not exist
+  template:
+    src: domain.j2
+    dest: /etc/nginx/sites-available/{{ domain_name }}.conf
+    owner: root
+    group: root
+  become: yes
+  tags:
+    - app_config
+    - deploy_playground
+
+- name: Create a symbolic link
+  file:
+    src: /etc/nginx/sites-available/{{ domain_name }}.conf
+    dest: /etc/nginx/sites-enabled/{{ domain_name }}.conf
+    owner: root
+    group: root
+    state: link
+  tags:
+    - app_config
+    - symlink
+    - deploy_playground
+#  become_user: root
+
+- name: Test nginx configuration
+  command: nginx -t
+  tags:
+    - always
+#  become_user: root
+
+- name: restart nginx
+  service: name=nginx state=restarted
+  tags:
+    - always
+#  become_user: root
+
+- name: restart uwsgi
+  service: name=uwsgi state=restarted
+  tags:
+    - always
+#  become_user: root

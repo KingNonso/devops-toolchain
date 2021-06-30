@@ -1,0 +1,25 @@
+---
+
+- name: Add deadsnakes team New Python Versions PPA to the apt sources list
+  apt_repository: repo='ppa:deadsnakes/ppa'
+                  update_cache={{ update_apt_cache }}
+                  state=present
+  when: enable_deadsnakes_ppa
+
+- name: Install additional packages
+  apt:
+    update_cache: "{{ update_apt_cache }}"
+    state: present
+    name:
+      - libcurl4-gnutls-dev
+      - gnutls-dev
+      - libpq-dev
+      - git
+      - uwsgi
+      - python-setuptools
+      - supervisor
+      - python3-psycopg2
+      - python3-dev
+      - python3-pip
+      - build-essential
+

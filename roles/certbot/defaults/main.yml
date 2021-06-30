@@ -1,0 +1,6 @@
+---
+
+certbot_auto_renew: true
+certbot_admin_email: chinonso@pvmt.co
+certbot_script: /usr/bin/certbot
+certbot_output_dir: "/etc/letsencrypt/live/{{ domain_name }}"

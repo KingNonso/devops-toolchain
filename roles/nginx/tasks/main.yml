@@ -1,0 +1,53 @@
+---
+
+- name: Install Nginx
+  apt: name=nginx update_cache={{ update_apt_cache }} state=present
+  tags: packages
+
+- name: Create the nginx.ini in ufw
+  template:
+    src: nginx_ini.j2
+    dest: /etc/ufw/applications.d/nginx.ini
+
+- name: Allow UFW to route traffic
+  shell: ufw allow OpenSSH
+
+- name: Enable UFW firewall non-interactive
+  shell: ufw --force enable
+
+- name: Allow Nginx through firewall
+  shell: ufw allow 'Nginx Full'
+#- name: Enable NGINX full edition
+#  service:
+#    name: nginx
+#    enabled: yes
+
+- name: Create Nginx sites-available directory if it does not exist
+  file:
+    path: /etc/nginx/sites-available
+    state: directory
+
+- name: Create Nginx sites-enabled directory if it does not exist
+  file:
+    path: /etc/nginx/sites-enabled
+    state: directory
+
+- name: Replace the nginx.conf to be used
+  template:
+    src: nginx_prop_http.j2
+    dest: /etc/nginx/nginx.conf
+
+- name: Ensure that the default site is disabled
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  notify: reload nginx
+  tags: nginx.disabled.default
+#
+#- name: Ensure that the application site is enabled
+#  file: src=/etc/nginx/sites-available/{{ application_name }}
+#        dest=/etc/nginx/sites-enabled/{{ application_name }}
+#        state=link
+#  notify: reload nginx
+
+- name: Ensure Nginx service is started
+  service: name=nginx state=started enabled=yes
+

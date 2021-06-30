@@ -1,0 +1,9 @@
+---
+- name: Create the application user
+  user: name={{ uwsgi_user }} state=present
+
+- name: Create the application group
+  group: name={{ uwsgi_group }} system=yes state=present
+
+- name: Add the application user to the application group
+  user: name={{ uwsgi_user }} group={{ uwsgi_group }} state=present

@@ -1,0 +1,33 @@
+---
+
+- include: install_additional_packages.yml
+  tags: packages
+
+- include: setup_virtualenv.yml
+  tags: virtualenv
+
+- include: setup_git_repo.yml
+  tags:
+    - deploy
+    - git
+
+- include: setup_env_file.yml
+  tags:
+    - deploy
+    - env
+
+- include: setup_django_app.yml
+  tags:
+    - deploy
+    - django
+
+- name: Reload system daemon service
+  shell: |
+    systemctl daemon-reload
+    systemctl restart uwsgi
+    systemctl restart nginx
+  tags:
+    - restart
+
+#- include: setup_supervisor.yml
+#  tags: supervisor

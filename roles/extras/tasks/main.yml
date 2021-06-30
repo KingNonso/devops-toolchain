@@ -1,0 +1,10 @@
+---
+
+- name: Install PostHog using Docker
+  shell: docker run --detach \
+   --name=mailhog \
+   --publish=8025:8025 \
+   --publish=1025:1025 \
+   --restart=unless-stopped \
+   mailhog/mailhog
+  tags: mailhog

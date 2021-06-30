@@ -1,0 +1,27 @@
+---
+- name: Get updated files from git repository
+  git:
+    repo: "https://{{ git_token }}@github.com/{{ git_url }}"
+    dest: "{{ project_path }}"
+    version: "{{ git_branch }}"
+    force: yes
+  tags:
+    - deploy_playground
+
+
+- name: Remove import from .local
+  lineinfile:
+    path: "{{ project_path }}/{{ application_name }}/settings/__init__.py"
+    regexp: "^from"
+    state: absent
+  tags:
+    - deploy_playground
+
+- name: Write the correct import
+  lineinfile:
+    path: "{{ project_path }}/{{ application_name }}/settings/__init__.py"
+    line: "from .{{ settings_file }} import *"
+    state: present
+    create: yes
+  tags:
+    - deploy_playground

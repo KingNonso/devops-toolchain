@@ -1,0 +1,64 @@
+---
+
+- name: Install virtualenv
+  pip: name={{ item }} state=present
+  with_items:
+    - virtualenv
+    - virtualenvwrapper
+    #- uwsgi
+    - pycurl
+  tags: packages
+
+- name: Check if Supervisor exists
+  stat: path=/etc/init.d/supervisor
+  register: supervisor_status
+  when: recreate_virtualenv
+
+- name: Ensure all processes managed by Supervisor are stopped if exists
+  command: supervisorctl stop all
+  when: recreate_virtualenv and supervisor_status.stat.exists
+
+#- name: Ensure no existing virtualenv exists
+#  file:
+#    state: absent
+#    path: "{{ virtualenv_path }}/"
+#  when: recreate_virtualenv
+
+- name: Write Virtualenv Bash command to file ~/.bashrc
+  blockinfile:
+    path: ~/.bashrc
+    block: |
+      export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+      export WORKON_HOME=/home/nonso/Env
+      source /usr/local/bin/virtualenvwrapper.sh
+      alias python=python3
+    insertafter: EOF
+    state: present
+  tags: [venv, deploy_playground]
+
+- name: Create the Venv
+  block:
+    - name: Create the virtualenv
+      shell: |
+        source ~/.bashrc
+        virtualenv -p {{ virtualenv_python_version }} {{ virtualenv_path }}
+      args:
+        executable: /bin/bash
+      tags: [venv, deploy_playground]
+  rescue:
+    - name: Rescue failure to create venv
+      shell: |
+        sudo apt install --reinstall virtualenv
+      args:
+        executable: /bin/bash
+
+- name: Activate bash and Activate virtualenv
+  shell: |
+    source ~/.bashrc
+    virtualenv {{ virtualenv_path }}
+  args:
+    executable: /bin/bash
+  tags: [venv, deploy_playground]
+
+
+

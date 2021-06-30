@@ -1,0 +1,14 @@
+---
+
+- name: restart application
+  supervisorctl: name={{ application_name }} state=restarted
+
+- name: test nginx configuration
+  command: nginx -t
+  become_user: root
+  tags: nginx-test
+
+- name: restart nginx
+  service: name=nginx state=restarted
+  become_user: root
+  tags: nginx-restart

@@ -1,0 +1,59 @@
+---
+domain_name: peddlesoft.com
+
+uid: root
+
+git_repo: https://github.com/PVMT-CO/web-backend.git
+
+# Set this flag to true so you can checkout code from a private git repository
+# which is setup with an SSH key.
+ssh_forward_agent: true
+
+project_name: peddlesoft
+application_name: peddlesoft
+
+# Note that this PPA doesn't guarantee timely updates in case of security issues.
+# Simply remove these two vars below if you prefer to use the official PPA and
+# default Python version that came with your Linux distro.
+#
+# More info here: https://launchpad.net/~fkrull/+archive/ubuntu/deadsnakes
+enable_deadsnakes_ppa: true
+virtualenv_python_version: python3.9
+
+# Database settings.
+db_user: "{{ application_name }}"
+db_name: "{{ application_name }}"
+db_host: localhost
+env_debug: False
+
+# Django settings
+requirements_file: "{{ project_path }}/requirements.txt"
+settings_file: local
+django_settings_file: "{{ application_name }}.settings.{{ settings_file }}"
+django_environment: "{{ project_path }}"
+
+
+# Application settings.
+virtualenv_path: "~/Env/{{ application_name }}"
+project_path: "~/{{ project_name }}"
+
+
+
+
+db_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62333438396261323065666236356561303337653965373762623166316564666133343461666132
+          6564636261313363646337393437623134333231663438300a353137356638643039363632376334
+          37376439353463623339353835333039626436393337613730393633323162646634663532653238
+          3464316631303932620a353762366630353739343531363335316661323232656330306661353837
+          3235
+
+git_token: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          33363564366634626132646166386432323833343862636336633338336132396366356436626137
+          6135336336316166313038353738373136393264333065360a373535333564636539633233356332
+          39623738663133663034376230376531383932663731656637386335343365663466356632353330
+          3130613037626438340a386330303862383336616462333265366562663530346561623065333631
+          32626431643064353164643236646232356337346262363362646434623933663030663439306634
+          3062326561653231353138323034396539343262383065306138
+

@@ -1,0 +1,58 @@
+---
+
+- name: Provision a {{ application_name }} web server
+  hosts: peddlesoft
+  become: true
+#  gather_facts: no
+  become_method: sudo
+  become_user: root
+
+  vars:
+    update_apt_cache: true
+#    certbot_admin_email: ceo@peddlesoft.com
+#    certbot_auto_renew_user: root
+#    certbot_create_if_missing: true # allow role generate certs
+#    certbot_create_method: standalone
+#    certbot_certs:
+#     - email: ceo@peddlesoft.com
+#       domains:
+#         - dev.pvmt.com
+#
+#    swapfile_size: 8192
+#    swapfile_swappiness: 20
+
+  vars_files:
+    - env_vars/base.yml
+
+  tasks:
+#    - name: Allow UFW to route traffic
+#      shell: ufw allow OpenSSH
+#    - name: Enable UFW firewall non-interactive
+#      shell: ufw --force enable
+#    - name: Check the output of UFW
+#      shell: ufw status
+#      register: ufw_status
+#    - name: get the username running the deploy
+#      become: false
+#      command: whoami
+#      register: username_on_the_host
+#
+#    - debug: var=git_token
+#    - debug: var=db_password
+
+  roles:
+#    - angstwad.docker_ubuntu
+#    - { role: base, create_swap_file: true, swap_file_size_kb: 4096 }
+#    - nginx
+#    - rabbitmq
+#    - geerlingguy.certbot
+#    - { role: geerlingguy.nodejs, nodejs_version: "14.x", nodejs_install_npm_user: "root"}
+#    - { role: ocha.yarn}
+    - uwsgi
+#    - db
+#    - web
+#    - celery
+#    - memcached
+#    - extras
+
+
