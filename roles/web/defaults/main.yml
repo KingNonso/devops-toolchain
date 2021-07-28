@@ -14,8 +14,8 @@ requirements_file: "{{ project_path }}/requirements.txt"
 domain_name: peddlesoft.com
 
 # Git settings
-git_url: "peddlesoft/web-app.git"
-git_branch: master
+git_url: "PVMT-CO/pavement-head.git"
+git_branch: main
 
 
 

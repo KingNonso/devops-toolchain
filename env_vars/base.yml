@@ -9,7 +9,7 @@ git_repo: https://github.com/PVMT-CO/web-backend.git
 # which is setup with an SSH key.
 ssh_forward_agent: true
 
-project_name: peddlesoft
+project_name: pavement-head
 application_name: peddlesoft
 
 # Note that this PPA doesn't guarantee timely updates in case of security issues.
