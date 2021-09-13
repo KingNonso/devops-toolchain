@@ -3,14 +3,14 @@ domain_name: peddlesoft.com
 
 uid: root
 
-git_repo: https://github.com/PVMT-CO/web-backend.git
+#git_repo: https://github.com/PVMT-CO/web-backend.git
 
 # Set this flag to true so you can checkout code from a private git repository
 # which is setup with an SSH key.
 ssh_forward_agent: true
 
-project_name: pavement-head
-application_name: peddlesoft
+project_name: headless
+application_name: headless
 
 # Note that this PPA doesn't guarantee timely updates in case of security issues.
 # Simply remove these two vars below if you prefer to use the official PPA and

@@ -1,7 +1,7 @@
 ---
 
 - name: Provision a {{ application_name }} web server
-  hosts: pavementdev
+  hosts: peddlesoft
   become: true
   gather_facts: no
   become_method: sudo
